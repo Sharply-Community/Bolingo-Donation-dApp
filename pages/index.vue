@@ -1,19 +1,18 @@
 <template>
   <div class="container">
     <div>
-      <logo />
       <h1 class="title">
-        bolingo
+        Bolingo
       </h1>
       <h2 class="subtitle">
-        A decentralized charity app developed by the Auctionlance team
+        A decentralized philantropy app
       </h2>
       <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">
-          Documentation
-        </a>
+        <nuxt-link to="/contributors" class="button--green">
+          Tip Someone
+        </nuxt-link>
         <a
-          href="https://github.com/nuxt/nuxt.js"
+          href="https://github.com/auctionlanceplatform/bolingo"
           target="_blank"
           class="button--grey"
         >
@@ -25,13 +24,7 @@
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
-export default {
-  components: {
-    Logo
-  }
-}
+export default {}
 </script>
 
 <style>
