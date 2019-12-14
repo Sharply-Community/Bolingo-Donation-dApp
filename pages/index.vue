@@ -5,7 +5,10 @@
         Bolingo
       </h1>
       <h2 class="subtitle">
-        A decentralized philantropy app
+        Bless others with your
+        <img
+          src="https://wavesexplorer.com/images/waves-124.ca73f3f482a959a46c7b9d71c8d4f9b6.svg"
+        />
       </h2>
       <div class="links">
         <nuxt-link to="/contributors" class="button--green">
@@ -43,14 +46,14 @@ export default {}
   display: block;
   font-weight: 300;
   font-size: 100px;
-  color: #35495e;
+  color: #333;
   letter-spacing: 1px;
 }
 
 .subtitle {
   font-weight: 300;
-  font-size: 42px;
-  color: #526488;
+  font-size: 2.5rem;
+  color: #000000;
   word-spacing: 5px;
   padding-bottom: 15px;
 }

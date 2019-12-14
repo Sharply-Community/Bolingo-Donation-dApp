@@ -11,13 +11,20 @@
           >
         </li>
         <li class="nav__item">
-          <nuxt-link to="/causes" class="nav__link">Causes</nuxt-link>
+          <a @click.prevent="comingSoon" href="#" class="nav__link">Causes</a>
         </li>
         <li class="nav__item">
-          <a href="#" class="nav__link">How it Works</a>
+          <a @click.prevent="comingSoon" href="#" class="nav__link"
+            >How it Works</a
+          >
         </li>
         <li class="nav__item">
-          <a href="#" class="nav__cta button--green">Login</a>
+          <a
+            @click.prevent="performCreateAccount"
+            href="#"
+            class="nav__cta button--green"
+            >Create account</a
+          >
         </li>
       </ul>
     </nav>
@@ -25,12 +32,51 @@
       <nuxt />
     </main>
     <footer>
-      developed 😍 with by the
+      Developed with 😍 by the
       <a href="https://beta.auctionlance.com">Auctionlance</a> team
     </footer>
   </div>
 </template>
-
+<script>
+export default {
+  methods: {
+    comingSoon(e) {
+      this.$breadstick.notify(`Coming soon! 😉`)
+    },
+    performCreateAccount() {
+      if (process.browser) {
+        const authData = {
+          data: 'Auctionlance Platform',
+          name: 'Auctionlance Platform',
+          icon: 'http://auctionlance.com/aucttoken.svg',
+          referrer: '/',
+          successPath: '/'
+        }
+        // eslint-disable-next-line no-undef
+        WavesKeeper.auth(authData)
+          .then((data) => {
+            this.$axios
+              .$get(
+                `https://nodes-testnet.wavesnodes.com/addresses/data/3N9EXJ2Y7szbSfrxUwhWxnL3zK8wf3xosDE/${data.publicKey}__user`
+              )
+              .then((data) => {
+                this.$breadstick.notify(
+                  'Hey! You already have an account on Bolingo'
+                )
+              })
+              .catch((_) => {
+                this.$breadstick.notify("Let's get you on Bolingo!")
+                this.$router.push({ path: '/register' })
+              })
+          })
+          .catch((_) => {
+            this.$toast.info('Something went wrong. Try reloading the page')
+          })
+      }
+    }
+  }
+}
+</script>
 <style>
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -122,5 +168,11 @@ a {
 main {
   margin-top: 2rem;
   margin-bottom: 2rem;
+  min-height: 100vh;
+}
+
+footer {
+  text-align: center;
+  color: #526488;
 }
 </style>
