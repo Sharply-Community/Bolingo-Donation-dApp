@@ -8,18 +8,15 @@
         Bless others with your
         <img
           src="https://wavesexplorer.com/images/waves-124.ca73f3f482a959a46c7b9d71c8d4f9b6.svg"
+          alt="Waves"
         />
       </h2>
       <div class="links">
         <nuxt-link to="/contributors" class="button--green">
           Tip Someone
         </nuxt-link>
-        <a
-          href="https://github.com/auctionlanceplatform/bolingo"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
+        <a @click.prevent="comingSoon" href="#" class="button--grey">
+          Support a Cause
         </a>
       </div>
     </div>
@@ -27,13 +24,19 @@
 </template>
 
 <script>
-export default {}
+export default {
+  methods: {
+    comingSoon() {
+      this.$breadstick.notify('Causes is coming soon!')
+    }
+  }
+}
 </script>
 
 <style>
 .container {
   margin: 0 auto;
-  min-height: 100vh;
+  min-height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;

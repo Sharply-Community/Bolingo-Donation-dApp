@@ -144,6 +144,9 @@ form > * {
   outline: none;
 }
 
+.description {
+  margin-top: 0.6rem;
+}
 .location {
   margin-top: 0.5rem;
   color: #333;

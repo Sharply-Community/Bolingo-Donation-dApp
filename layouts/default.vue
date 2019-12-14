@@ -171,7 +171,7 @@ a {
 main {
   margin-top: 2rem;
   margin-bottom: 2rem;
-  min-height: 100vh;
+  min-height: 85vh;
 }
 
 footer {
