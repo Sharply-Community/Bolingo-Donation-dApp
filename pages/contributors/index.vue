@@ -2,7 +2,11 @@
   <div class="contributors">
     <div class="cards">
       <div v-for="user in verifiedUsers" :key="user.publicKey" class="card">
-        <div><img :src="user.info.avatarUrl" class="avatar" /></div>
+        <div>
+          <nuxt-link :to="`/contributors/${user.publicKey}`">
+            <img :src="user.info.avatarUrl" class="avatar" />
+          </nuxt-link>
+        </div>
         <div class="body">
           <h3>
             <nuxt-link :to="`/contributors/${user.publicKey}`">{{
@@ -29,15 +33,16 @@ export default {
 
 <style scoped>
 .contributors {
-  padding: 2em 8em;
+  padding: 5em 8em;
 }
 .cards {
   display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 1rem;
 }
 
 .card {
   padding: 2rem 1rem;
-  width: 20%;
   text-align: center;
 }
 .avatar {

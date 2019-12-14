@@ -1,10 +1,17 @@
 <template>
-  <div>
-    <div class="image"></div>
+  <div class="register-wrapper">
+    <div class="image">
+      <img src="~/assets/background.svg" />
+    </div>
     <form @submit="signUp">
       <div class="form-group">
         <label for="name">Name</label>
-        <input id="name" type="text" placeholder="Kelvin Omereshone" />
+        <input
+          id="name"
+          v-model="name"
+          type="text"
+          placeholder="Kelvin Omereshone"
+        />
       </div>
       <div class="form-group">
         <label for="description">Brief bio</label>
@@ -51,7 +58,7 @@
           placeholder="url to your twitter account"
         />
       </div>
-      <button type="submit">Sign me up</button>
+      <button type="submit" class="button--green">Sign me up</button>
     </form>
   </div>
 </template>
@@ -107,4 +114,51 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.register-wrapper {
+  display: flex;
+  margin-top: 7rem;
+  padding: 2rem 5rem;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.image {
+  flex-basis: 50%;
+}
+
+img {
+  width: 100%;
+}
+
+form {
+  padding-left: 5rem;
+  display: grid;
+  grid-row-gap: 0.7rem;
+  flex-basis: 40%;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input {
+  font-size: 0.8rem;
+  border: none;
+  background-color: rgb(223, 226, 223);
+  color: #333;
+  padding: 0.8rem 1rem;
+  border-radius: 3px;
+  border: 1px solid #3b8070;
+}
+
+.form-group input {
+  outline: none;
+}
+</style>
