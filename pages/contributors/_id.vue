@@ -3,18 +3,21 @@
     <div class="user-profile">
       <img :src="user.info.avatarUrl" />
       <h3 class="name">{{ user.info.name }}</h3>
+      <p class="category">
+        <em>{{ user.category }}</em>
+      </p>
       <p class="description">{{ user.info.description }}</p>
       <p class="location">📍 {{ user.info.location }}</p>
       <div class="social-links">
         <a
           v-if="user.info.telegramUrl"
-          :href="`https://${user.info.telegramUrl}`"
+          :href="`${user.info.telegramUrl}`"
           target="_blank"
           class="social telegram"
         ></a>
         <a
           v-if="user.info.twitterUrl"
-          :href="`https://${user.info.twitterUrl}`"
+          :href="`${user.info.twitterUrl}`"
           target="_blank"
           class="social twitter"
         ></a>
@@ -31,12 +34,16 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
       user: '',
       amount: 1
     }
+  },
+  computed: {
+    ...mapState(['dAppAddress', 'wavesBaseURL'])
   },
   mounted() {
     this.getUser()
@@ -45,14 +52,15 @@ export default {
     getUser() {
       this.$axios
         .$get(
-          `https://nodes-testnet.wavesnodes.com/addresses/data/3N9EXJ2Y7szbSfrxUwhWxnL3zK8wf3xosDE/${this.$route.params.id}__user`
+          `${this.wavesBaseURL}${this.dAppAddress}/${this.$route.params.id}__user`
         )
         .then((data) => {
           const userData = data.value.split('__')
           const userKey = data.key.split('__')
           const userInfo = {
             info: JSON.parse(userData[0]),
-            status: userData[1],
+            category: userData[1],
+            status: userData[2],
             publicKey: userKey[0]
           }
           this.user = userInfo
@@ -175,5 +183,9 @@ form > * {
 .telegram {
   background: url('https://wavesexplorer.com/images/telegram-28.4dc717c7d155a8fa8be31e495768c748.svg')
     no-repeat;
+}
+.category {
+  color: #3b8070;
+  margin-top: 0.2em;
 }
 </style>

@@ -1,47 +1,73 @@
 <template>
   <div>
-    <nav class="nav">
-      <div class="nav__brand">
-        <h2><nuxt-link to="/">Bolingo</nuxt-link></h2>
-      </div>
-      <ul class="nav__menu">
-        <li class="nav__item">
-          <nuxt-link to="/contributors" class="nav__link"
-            >Contributors</nuxt-link
-          >
-        </li>
-        <li class="nav__item">
-          <a @click.prevent="comingSoon" href="#" class="nav__link">Causes</a>
-        </li>
-        <li class="nav__item">
-          <a @click.prevent="comingSoon" href="#" class="nav__link"
-            >How it Works</a
-          >
-        </li>
-        <li class="nav__item">
-          <a
-            @click.prevent="performCreateAccount"
-            href="#"
-            class="nav__cta button--green"
-            >Create account</a
-          >
-        </li>
-      </ul>
-    </nav>
-    <main>
-      <nuxt />
-    </main>
-    <footer>
-      Developed with 😍 by the
-      <a href="https://beta.auctionlance.com">Auctionlance</a> team
-    </footer>
+    <div v-if="!isMobileScreenSize">
+      <nav class="nav">
+        <div class="nav__brand">
+          <h2><nuxt-link to="/">Bolingo</nuxt-link></h2>
+        </div>
+        <ul class="nav__menu">
+          <li class="nav__item">
+            <nuxt-link to="/contributors" class="nav__link"
+              >Contributors</nuxt-link
+            >
+          </li>
+          <li class="nav__item">
+            <a @click.prevent="comingSoon" href="#" class="nav__link">Causes</a>
+          </li>
+          <li class="nav__item">
+            <a @click.prevent="comingSoon" href="#" class="nav__link"
+              >How it Works</a
+            >
+          </li>
+          <li class="nav__item">
+            <a
+              @click.prevent="performCreateAccount"
+              href="#"
+              class="nav__cta button--green"
+              >Create account</a
+            >
+          </li>
+        </ul>
+      </nav>
+      <main>
+        <nuxt />
+      </main>
+      <footer>
+        Developed with 😍 by the
+        <a href="https://beta.auctionlance.com">Auctionlance</a> team
+      </footer>
+    </div>
+    <div v-else class="is-mobile">
+      <div>🥺 Please use a desktop computer</div>
+    </div>
   </div>
 </template>
 <script>
 export default {
+  data() {
+    return {
+      isMobileScreenSize: false
+    }
+  },
+  created() {
+    this.getIsMobileStatus()
+  },
   methods: {
     comingSoon(e) {
       this.$breadstick.notify(`Coming soon! 😉`)
+    },
+    getIsMobileStatus() {
+      if (process.browser) {
+        if (
+          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+          )
+        ) {
+          this.isMobileScreenSize = true
+        } else {
+          this.isMobileScreenSize = false
+        }
+      }
     },
     performCreateAccount() {
       if (process.browser) {
@@ -177,5 +203,14 @@ main {
 footer {
   text-align: center;
   color: #526488;
+}
+
+.is-mobile {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(223, 226, 223);
+  color: #35495e;
 }
 </style>

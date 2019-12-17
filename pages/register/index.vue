@@ -11,7 +11,16 @@
           v-model="name"
           type="text"
           placeholder="Kelvin Omereshone"
+          required
         />
+      </div>
+      <div class="form-group">
+        <label for="category">How do you contribute to Waves?</label>
+        <select id="category" v-model="category" name="category" required>
+          <option v-for="userCategory in categories" :key="userCategory">{{
+            userCategory
+          }}</option>
+        </select>
       </div>
       <div class="form-group">
         <label for="description">Brief bio</label>
@@ -20,6 +29,7 @@
           v-model="description"
           type="text"
           placeholder="What do you do?"
+          required
         />
       </div>
       <div class="form-group">
@@ -29,33 +39,37 @@
           v-model="location"
           type="text"
           placeholder="Agbor, Nigeria"
+          required
         />
       </div>
       <div class="form-group">
-        <label for="avatar_url">Avatar url</label>
+        <label for="avatar_url">Avatar URL(include http/https)</label>
         <input
           id="avatar_url"
           v-model="avatarUrl"
           type="text"
           placeholder="url to your avatar"
+          required
         />
       </div>
       <div class="form-group">
-        <label for="telegram_url">Telegram url</label>
+        <label for="telegram_url">Telegram URL(include http/https)</label>
         <input
           id="telegram_url"
           v-model="telegramUrl"
           type="text"
           placeholder="url to your telegram"
+          required
         />
       </div>
       <div class="form-group">
-        <label for="twitter_url">Twitter url</label>
+        <label for="twitter_url">Twitter URL(include http/https)</label>
         <input
           id="twitter_url"
           v-model="twitterUrl"
           type="text"
           placeholder="url to your twitter account"
+          required
         />
       </div>
       <button type="submit" class="button--green">Sign me up</button>
@@ -64,6 +78,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -72,8 +87,12 @@ export default {
       location: '',
       avatarUrl: '',
       telegramUrl: '',
-      twitterUrl: ''
+      twitterUrl: '',
+      category: ''
     }
+  },
+  computed: {
+    ...mapState(['dAppAddress', 'categories'])
   },
   methods: {
     signUp() {
@@ -89,10 +108,13 @@ export default {
       const tx = {
         type: 16,
         data: {
-          dApp: '3N9EXJ2Y7szbSfrxUwhWxnL3zK8wf3xosDE',
+          dApp: this.dAppAddress,
           call: {
             function: 'signUp',
-            args: [{ type: 'string', value: payload }]
+            args: [
+              { type: 'string', value: payload },
+              { type: 'string', value: this.category }
+            ]
           },
           payment: [],
           fee: {
@@ -105,6 +127,7 @@ export default {
       WavesKeeper.signAndPublishTransaction(tx)
         .then((data) => {
           this.$breadstick.notify('Bolingo! Your account has been created')
+          this.$router.push({ path: '/contributors' })
         })
         .catch((_) => {
           this.$breadstick.notify('Oh dear! Something went wrong')
@@ -148,7 +171,8 @@ form {
   color: #333;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
   font-size: 0.8rem;
   border: none;
   background-color: rgb(223, 226, 223);
@@ -158,7 +182,12 @@ form {
   border: 1px solid #3b8070;
 }
 
-.form-group input {
+.form-group select {
+  height: 42.5px;
+}
+
+.form-group input,
+.form-group select {
   outline: none;
 }
 </style>

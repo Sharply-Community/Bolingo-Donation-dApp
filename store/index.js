@@ -1,5 +1,13 @@
+import setUpBlockchainEnvironment from '@/helpers/getBlockchainEnv'
+
+// Getting the correct environment. values: main | test
+const environment = setUpBlockchainEnvironment('test')
+
 export const state = () => ({
-  users: []
+  users: [],
+  wavesBaseURL: environment.baseUrl,
+  dAppAddress: environment.dAppAddress,
+  categories: ['ambassador', 'active contributor', 'community participants']
 })
 
 export const getters = {
@@ -10,7 +18,8 @@ export const getters = {
       const key = user.key.split('__')
       return {
         info: JSON.parse(info[0]),
-        status: info[1],
+        category: info[1],
+        status: info[2],
         publicKey: key[0]
       }
     })
@@ -28,7 +37,7 @@ export const actions = {
     const regex = '.*?__user$'
     return this.$axios
       .$get(
-        `https://nodes-testnet.wavesnodes.com/addresses/data/3N9EXJ2Y7szbSfrxUwhWxnL3zK8wf3xosDE?matches=${regex}`
+        `${context.state.wavesBaseURL}${context.state.dAppAddress}?matches=${regex}`
       )
       .then((payload) => {
         context.commit('LOAD_USERS', payload)
