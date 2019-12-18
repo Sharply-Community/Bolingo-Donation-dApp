@@ -33,8 +33,7 @@
         <nuxt />
       </main>
       <footer>
-        Developed with 😍 by the
-        <a href="https://beta.auctionlance.com">Auctionlance</a> team
+        Made with love 😍 in Africa
       </footer>
     </div>
     <div v-else class="is-mobile">

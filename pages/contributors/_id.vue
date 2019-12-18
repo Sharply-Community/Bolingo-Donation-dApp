@@ -8,6 +8,14 @@
       </p>
       <p class="description">{{ user.info.description }}</p>
       <p class="location">📍 {{ user.info.location }}</p>
+      <div class="tips-stat">
+        <p>
+          Tips: <span>{{ totalTips }}</span>
+        </p>
+        <p>
+          Tips Worth: <span>{{ totalTipsAmount }}</span> Waves
+        </p>
+      </div>
       <div class="social-links">
         <a
           v-if="user.info.telegramUrl"
@@ -24,7 +32,13 @@
       </div>
       <form @submit.prevent="tip" class="tip">
         <label for="tip">tip</label>
-        <input id="tip" v-model="amount" type="amount" class="amount-field" />
+        <input
+          id="tip"
+          v-model="amount"
+          type="amount"
+          class="amount-field"
+          required
+        />
         <button type="submit" to="/contributors" class="button--green">
           {{ amount }} Waves
         </button>
@@ -39,11 +53,13 @@ export default {
   data() {
     return {
       user: '',
+      totalTips: 0,
+      totalTipsAmount: 0,
       amount: 1
     }
   },
   computed: {
-    ...mapState(['dAppAddress', 'wavesBaseURL'])
+    ...mapState(['dAppAddress', 'wavesBaseURL', 'wavesDecimal'])
   },
   mounted() {
     this.getUser()
@@ -64,13 +80,42 @@ export default {
             publicKey: userKey[0]
           }
           this.user = userInfo
+          this.getUserTotalTips()
+          this.getUserTotalTipsAmount()
+        })
+    },
+    getUserTotalTips() {
+      this.$axios
+        .$get(
+          `${this.wavesBaseURL}${this.dAppAddress}/${this.$route.params.id}__totalTips`
+        )
+        .then((data) => {
+          this.totalTips = data.value
+        })
+    },
+    getUserTotalTipsAmount() {
+      this.$axios
+        .$get(
+          `${this.wavesBaseURL}${this.dAppAddress}/${this.$route.params.id}__totalTipsAmount`
+        )
+        .then((data) => {
+          this.totalTipsAmount = data.value / this.wavesDecimal
         })
     },
     tip() {
+      if (
+        this.amount === 0 ||
+        this.amount < 0 ||
+        typeof this.amount !== 'number'
+      ) {
+        this.$breadstick.notify('Invalid amount to tip.')
+        return
+      }
+
       const tx = {
         type: 16,
         data: {
-          dApp: '3N9EXJ2Y7szbSfrxUwhWxnL3zK8wf3xosDE',
+          dApp: this.dAppAddress,
           call: {
             function: 'tip',
             args: [{ type: 'string', value: this.user.publicKey }]
@@ -94,6 +139,8 @@ export default {
           this.$breadstick.notify(
             `👍 great! You just tipped ${this.user.info.name}`
           )
+          this.getUserTotalTips()
+          this.getUserTotalTipsAmount()
         })
         .catch((_) => {
           this.$breadstick.notify(
@@ -187,5 +234,19 @@ form > * {
 .category {
   color: #3b8070;
   margin-top: 0.2em;
+}
+
+.tips-stat {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0.8rem 0;
+}
+.tips-stat p {
+  color: #343434;
+}
+.tips-stat p > span {
+  color: #3b8070;
+  font-weight: 700;
+  font-size: 1.3rem;
 }
 </style>
