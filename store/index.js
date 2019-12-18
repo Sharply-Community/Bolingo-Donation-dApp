@@ -1,13 +1,14 @@
 import setUpBlockchainEnvironment from '@/helpers/getBlockchainEnv'
 
 // Getting the correct environment. values: main | test
-const environment = setUpBlockchainEnvironment('test')
+const environment = setUpBlockchainEnvironment('main')
 
 export const state = () => ({
   users: [],
   wavesBaseURL: environment.baseUrl,
   dAppAddress: environment.dAppAddress,
-  categories: ['ambassador', 'active contributor', 'community participants']
+  categories: ['ambassador', 'active contributor', 'community participants'],
+  wavesDecimal: 1e8
 })
 
 export const getters = {

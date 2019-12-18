@@ -33,12 +33,11 @@
         <nuxt />
       </main>
       <footer>
-        Developed with 😍 by the
-        <a href="https://beta.auctionlance.com">Auctionlance</a> team
+        Made with love 😍 in Africa
       </footer>
     </div>
     <div v-else class="is-mobile">
-      <div>🥺 Please use a desktop computer</div>
+      <div>Please use a desktop browser with Waves Keeper installed</div>
     </div>
   </div>
 </template>
