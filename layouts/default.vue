@@ -15,11 +15,6 @@
             <a @click.prevent="comingSoon" href="#" class="nav__link">Causes</a>
           </li>
           <li class="nav__item">
-            <a @click.prevent="comingSoon" href="#" class="nav__link"
-              >How it Works</a
-            >
-          </li>
-          <li class="nav__item">
             <a
               @click.prevent="performCreateAccount"
               href="#"
