@@ -206,5 +206,7 @@ footer {
   align-items: center;
   background-color: rgb(223, 226, 223);
   color: #35495e;
+  padding: 0 0.5rem;
+  text-align: center;
 }
 </style>
