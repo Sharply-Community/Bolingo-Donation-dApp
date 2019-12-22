@@ -1,65 +1,83 @@
 <template>
-  <div v-if="user" class="user-profile-wrapper">
-    <div class="user-profile">
-      <img :src="user.info.avatarUrl" />
-      <h3 class="name">{{ user.info.name }}</h3>
-      <p class="category">
-        <em>{{ user.category }}</em>
-      </p>
-      <p class="description">{{ user.info.description }}</p>
-      <p class="location">📍 {{ user.info.location }}</p>
-      <div class="tips-stat">
-        <p>
-          Tips: <span>{{ totalTips }}</span>
+  <div>
+    <div v-if="!fetchingUser" class="user-profile-wrapper">
+      <div class="user-profile">
+        <img :src="user.info.avatarUrl" />
+        <h3 class="name">{{ user.info.name }}</h3>
+        <p class="category">
+          <em>{{ user.category }}</em>
         </p>
-        <p>
-          Tips Worth: <span>{{ totalTipsAmount }}</span> Waves
-        </p>
+        <p class="description">{{ user.info.description }}</p>
+        <p class="location">📍 {{ user.info.location }}</p>
+        <div class="tips-stat">
+          <p>
+            Tips: <span>{{ totalTips }}</span>
+          </p>
+          <p>
+            Tips Worth: <span>{{ totalTipsAmount }}</span> Waves
+          </p>
+        </div>
+        <div class="social-links">
+          <a
+            v-if="user.info.telegramUrl"
+            :href="`${user.info.telegramUrl}`"
+            target="_blank"
+            class="social telegram"
+          ></a>
+          <a
+            v-if="user.info.twitterUrl"
+            :href="`${user.info.twitterUrl}`"
+            target="_blank"
+            class="social twitter"
+          ></a>
+        </div>
+        <form @submit.prevent="tip" class="tip">
+          <label for="tip">tip</label>
+          <input
+            id="tip"
+            v-model="amount"
+            type="amount"
+            class="amount-field"
+            required
+          />
+          <button type="submit" to="/contributors" class="button--green">
+            {{ amount }} Waves
+          </button>
+        </form>
       </div>
-      <div class="social-links">
-        <a
-          v-if="user.info.telegramUrl"
-          :href="`${user.info.telegramUrl}`"
-          target="_blank"
-          class="social telegram"
-        ></a>
-        <a
-          v-if="user.info.twitterUrl"
-          :href="`${user.info.twitterUrl}`"
-          target="_blank"
-          class="social twitter"
-        ></a>
-      </div>
-      <form @submit.prevent="tip" class="tip">
-        <label for="tip">tip</label>
-        <input
-          id="tip"
-          v-model="amount"
-          type="amount"
-          class="amount-field"
-          required
-        />
-        <button type="submit" to="/contributors" class="button--green">
-          {{ amount }} Waves
-        </button>
-      </form>
+    </div>
+    <div v-else class="content-loader">
+      <facebook-loader :unique-key="uniqueKey" />
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import { FacebookLoader } from 'vue-content-loader'
 export default {
+  components: {
+    FacebookLoader
+  },
   data() {
     return {
       user: '',
       totalTips: 0,
       totalTipsAmount: 0,
-      amount: 1
+      amount: 1,
+      fetchingUser: true
     }
   },
   computed: {
     ...mapState(['dAppAddress', 'wavesBaseURL', 'wavesDecimal'])
+  },
+  asyncData() {
+    const uid = Math.random()
+      .toString(36)
+      .substring(2)
+    return {
+      uniqueKey: uid
+    }
   },
   mounted() {
     this.getUser()
@@ -71,6 +89,7 @@ export default {
           `${this.wavesBaseURL}${this.dAppAddress}/${this.$route.params.id}__user`
         )
         .then((data) => {
+          this.fetchingUser = false
           const userData = data.value.split('__')
           const userKey = data.key.split('__')
           const userInfo = {
@@ -82,6 +101,10 @@ export default {
           this.user = userInfo
           this.getUserTotalTips()
           this.getUserTotalTipsAmount()
+        })
+        .catch((error) => {
+          this.fetchingUser = false
+          this.$breadstick.notify(error.message)
         })
     },
     getUserTotalTips() {
@@ -249,5 +272,11 @@ form > * {
   color: #3b8070;
   font-weight: 700;
   font-size: 1.3rem;
+}
+
+.content-loader {
+  margin: 0rem auto;
+  padding-top: 8rem;
+  width: 50%;
 }
 </style>

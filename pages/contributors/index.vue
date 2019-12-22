@@ -2,17 +2,20 @@
   <div class="contributors">
     <div class="cards">
       <div v-for="user in verifiedUsers" :key="user.publicKey" class="card">
-        <div>
-          <nuxt-link :to="`/contributors/${user.publicKey}`">
-            <img :src="user.info.avatarUrl" class="avatar" />
-          </nuxt-link>
-        </div>
-        <div class="body">
-          <h3>
-            <nuxt-link :to="`/contributors/${user.publicKey}`">{{
-              user.info.name
-            }}</nuxt-link>
-          </h3>
+        <facebook-loader v-if="!user" :unique-key="uniqueKey" />
+        <div v-else>
+          <div>
+            <nuxt-link :to="`/contributors/${user.publicKey}`">
+              <img :src="user.info.avatarUrl" class="avatar" />
+            </nuxt-link>
+          </div>
+          <div class="body">
+            <h3>
+              <nuxt-link :to="`/contributors/${user.publicKey}`">{{
+                user.info.name
+              }}</nuxt-link>
+            </h3>
+          </div>
         </div>
       </div>
     </div>
@@ -21,9 +24,21 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { FacebookLoader } from 'vue-content-loader'
 export default {
+  components: {
+    FacebookLoader
+  },
   computed: {
     ...mapGetters(['verifiedUsers'])
+  },
+  asyncData() {
+    const uid = Math.random()
+      .toString(36)
+      .substring(2)
+    return {
+      uniqueKey: uid
+    }
   },
   fetch({ store }) {
     store.dispatch('fetchUsers')
