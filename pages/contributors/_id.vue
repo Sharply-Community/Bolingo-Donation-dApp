@@ -129,7 +129,7 @@ export default {
       if (
         this.amount === 0 ||
         this.amount < 0 ||
-        typeof this.amount !== 'number'
+        typeof isNaN(Number(this.amount))
       ) {
         this.$breadstick.notify('Invalid amount to tip.')
         return
