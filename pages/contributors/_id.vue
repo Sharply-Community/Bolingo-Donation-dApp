@@ -61,7 +61,12 @@ export default {
   },
   data() {
     return {
-      user: '',
+      user: {
+        info: '',
+        category: '',
+        status: '',
+        publicKey: ''
+      },
       totalTips: 0,
       totalTipsAmount: 0,
       amount: 1,
@@ -71,15 +76,34 @@ export default {
   computed: {
     ...mapState(['dAppAddress', 'wavesBaseURL', 'wavesDecimal'])
   },
-  asyncData() {
+  asyncData({ params, error, payload }) {
+    let user = {
+      info: '',
+      category: '',
+      status: '',
+      publicKey: ''
+    }
+    if (payload) {
+      const userData = payload.value.split('__')
+      const userKey = payload.key.split('__')
+      const userInfo = {
+        info: JSON.parse(userData[0]),
+        category: userData[1],
+        status: userData[2],
+        publicKey: userKey[0]
+      }
+      user = userInfo
+    }
     const uid = Math.random()
       .toString(36)
       .substring(2)
     return {
-      uniqueKey: uid
+      uniqueKey: uid,
+      user,
+      fetchingUser: false
     }
   },
-  mounted() {
+  created() {
     this.getUser()
   },
   methods: {

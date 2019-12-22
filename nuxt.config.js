@@ -1,3 +1,18 @@
+import axios from 'axios'
+const dynamicRoutes = () => {
+  return axios
+    .get(
+      'https://nodes.wavesnodes.com/addresses/data/3PAqH8JqgDUxkjLLbfHh56DyYcgYTGQhHcf?matches=.*?__user$'
+    )
+    .then((res) => {
+      return res.data.map((contributor) => {
+        return {
+          route: `/contributors/${contributor.key.split('__')[0]}`,
+          payload: contributor
+        }
+      })
+    })
+}
 export default {
   mode: 'universal',
   /*
@@ -28,6 +43,9 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: ['~/plugins/breadstick.client.js'],
+  generate: {
+    routes: dynamicRoutes
+  },
   /*
    ** Nuxt.js dev-modules
    */
