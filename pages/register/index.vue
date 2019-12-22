@@ -126,11 +126,15 @@ export default {
       // eslint-disable-next-line no-undef
       WavesKeeper.signAndPublishTransaction(tx)
         .then((data) => {
+          this.$router.push({
+            path: '/register/success'
+          })
           this.$breadstick.notify('Bolingo! Your account has been created')
-          this.$router.push({ path: '/contributors' })
         })
-        .catch((_) => {
-          this.$breadstick.notify('Oh dear! Something went wrong')
+        .catch((error) => {
+          this.$breadstick.notify(
+            `Oh dear! Something went wrong - ${error.message}`
+          )
         })
     }
   }
