@@ -105,6 +105,10 @@ export default {
   },
   created() {
     this.getUser()
+    if (this.user.info) {
+      this.getUserTotalTips()
+      this.getUserTotalTipsAmount()
+    }
   },
   methods: {
     getUser() {
@@ -135,7 +139,7 @@ export default {
     getUserTotalTips() {
       this.$axios
         .$get(
-          `${this.wavesBaseURL}${this.dAppAddress}/${this.$route.params.id}__totalTips`
+          `${this.wavesBaseURL}${this.dAppAddress}/${this.user.publicKey}__totalTips`
         )
         .then((data) => {
           this.totalTips = data.value
@@ -144,7 +148,7 @@ export default {
     getUserTotalTipsAmount() {
       this.$axios
         .$get(
-          `${this.wavesBaseURL}${this.dAppAddress}/${this.$route.params.id}__totalTipsAmount`
+          `${this.wavesBaseURL}${this.dAppAddress}/${this.user.publicKey}__totalTipsAmount`
         )
         .then((data) => {
           this.totalTipsAmount = data.value / this.wavesDecimal
