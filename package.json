@@ -2,7 +2,6 @@
   "name": "bolingo",
   "version": "1.0.0",
   "description": "Decentralized donation, charity and tipping app",
-  "author": "Auctionlance Platform",
   "private": true,
   "scripts": {
     "dev": "nuxt",

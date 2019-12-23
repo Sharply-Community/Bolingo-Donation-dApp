@@ -26,6 +26,11 @@
 import { mapGetters } from 'vuex'
 import { FacebookLoader } from 'vue-content-loader'
 export default {
+  head() {
+    return {
+      title: 'Contributors on Bolingo'
+    }
+  },
   components: {
     FacebookLoader
   },
@@ -42,6 +47,11 @@ export default {
   },
   fetch({ store }) {
     store.dispatch('fetchUsers')
+  },
+  created() {
+    if (!this.verifiedUsers) {
+      this.$store.dispatch('fetchUsers')
+    }
   }
 }
 </script>

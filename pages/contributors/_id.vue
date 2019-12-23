@@ -56,6 +56,28 @@
 import { mapState } from 'vuex'
 import { FacebookLoader } from 'vue-content-loader'
 export default {
+  head() {
+    return {
+      title: `${this.user.info.name} | Bolingo`,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: `Tip ${this.user.info.name} on Bolingo with Waves`
+        },
+        {
+          hid: 'og:description',
+          name: 'og:description',
+          content: `Tip ${this.user.info.name} on Bolingo with Waves`
+        },
+        {
+          hid: 'og:url',
+          name: 'og:url',
+          content: `https://bolingo.xyz/contributors/${this.user.publicKey}`
+        }
+      ]
+    }
+  },
   components: {
     FacebookLoader
   },
