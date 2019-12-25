@@ -7,7 +7,7 @@ export default function setUpBlockchainEnvironment(environment) {
       }
     case 'main':
       return {
-        dAppAddress: '3PAqH8JqgDUxkjLLbfHh56DyYcgYTGQhHcf',
+        dAppAddress: '3P2NM3bGQMiV4dzY93WfedpHwcvNv9qRQNF',
         baseUrl: 'https://nodes.wavesnodes.com/addresses/data/'
       }
   }
