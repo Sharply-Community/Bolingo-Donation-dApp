@@ -37,11 +37,15 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
       isMobileScreenSize: false
     }
+  },
+  computed: {
+    ...mapState(['dAppAddress', 'wavesBaseURL'])
   },
   created() {
     this.getIsMobileStatus()
@@ -77,7 +81,7 @@ export default {
           .then((data) => {
             this.$axios
               .$get(
-                `https://nodes-testnet.wavesnodes.com/addresses/data/3N9EXJ2Y7szbSfrxUwhWxnL3zK8wf3xosDE/${data.publicKey}__user`
+                `${this.wavesBaseURL}${this.dAppAddress}/${data.publicKey}__user`
               )
               .then((data) => {
                 this.$breadstick.notify(
